@@ -1,0 +1,15 @@
+.header-label{
+    font-weight: bold;
+    font-size: 24px;
+    text-align: right;
+    text-transform: uppercase;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:#fff;
+    background-color: #42f486;
+    padding:10px 0px;
+}
+
+.app-pb-bar{
+    padding:0px;
+    margin:0px;
+}

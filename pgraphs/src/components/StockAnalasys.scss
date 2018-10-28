@@ -1,0 +1,20 @@
+.filter-section-container{
+    height:800,;
+    border-right:1px solid #dcdcdc;
+    box-shadow:rgb(136, 136, 136) 2px 5px 7px;
+    .filter-label{
+        padding-left:10px
+    }
+    .year-container{
+        border-bottom:1px solid #dcdcdc;
+        padding:20px;
+    }
+    .type-contaier{
+        border-bottom:1px solid #dcdcdc;
+        padding:20px
+    }
+}
+
+.padding-20{
+    padding:20px
+}
