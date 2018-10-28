@@ -18,15 +18,19 @@ class StockAnalasys extends Component {
         super(props);
         this.state={
             stockData:[],
-            sensexType:''
+            sensexType:'',
+            keys:[],
+            type:''
         }
     }
 
     componentDidMount(){
         var dataService = new DataService();
         this.setState({
-          stockData : dataService.getData()
-        })
+          stockData : dataService.getData(),
+          type:'both',
+          keys:['Date','bseOpen','bseHigh','bseLow','bseClose','bsetype','diaOpen','diaHigh','diaLow','diaClose','diaType']
+        });       
     }
 
     onSensexTypeChnge = (e) => {
@@ -42,7 +46,9 @@ class StockAnalasys extends Component {
                             }
                         });
                         this.setState({
-                            stockData:filteredStock
+                            stockData:filteredStock,
+                            keys:['Date','bseOpen','bseHigh','bseLow','bseClose','bsetype'],
+                            type:'bse'
                         })
                 break;
                 case 2:
@@ -52,7 +58,9 @@ class StockAnalasys extends Component {
                             }
                         });
                         this.setState({
-                            stockData:filteredStock
+                            stockData:filteredStock,
+                            keys:['Date','diaOpen','diaHigh','diaLow','diaClose','diaType'],
+                            type:'dia'
                         })
                 break;
                 case 3:
@@ -60,12 +68,28 @@ class StockAnalasys extends Component {
                             return diaData;
                         });
                         this.setState({
-                            stockData:filteredStock
+                            stockData:filteredStock,
+                            keys:['Date','bseOpen','bseHigh','bseLow','bseClose','bsetype','diaOpen','diaHigh','diaLow','diaClose','diaType'],
+                            type:'both'
                         })
                 break;
                 default:
                 break;
             }
+        })
+    }
+
+    handleOnDateChange = (date) => {
+        var dataService = new DataService();
+        let filteredData = dataService.getData().map((sData)=>{
+            let sDate = new Date(sData.Date).getFullYear();
+            console.log(sDate);
+            if(sDate === parseInt(date)){
+                return sData;
+            }
+        });
+        this.setState({
+            stockData:filteredData
         })
     }
 
@@ -87,7 +111,7 @@ class StockAnalasys extends Component {
                                 Year
                             </Col>
                             <Col span={14}>
-                                <Select style={{ width: 120 }}>
+                                <Select style={{ width: 120 }} onChange={this.handleOnDateChange}>
                                     {dateOptions}
                                 </Select>
                             </Col>                            
@@ -96,7 +120,7 @@ class StockAnalasys extends Component {
                             <Col style={{paddingLeft:'20px',paddingTop:'10px'}}>Sensex</Col>
                         </Row>
                         <Row style={{borderBottom:'1px solid #dcdcdc',padding:'20px'}}>
-                            <RadioGroup onChange={this.onSensexTypeChnge}>
+                            <RadioGroup onChange={this.onSensexTypeChnge} defaultValue={this.state.type}>
                                 <Radio value={1}>BSE</Radio>
                                 <Radio value={2}>DIA</Radio>
                                 <Radio value={3}>BSE AND DIA</Radio>
@@ -114,7 +138,7 @@ class StockAnalasys extends Component {
                         </Row>
                     </Col>
                     <Col span={18} style={{textAlign:'center',paddingTop:'60px',paddingLeft:'120px'}}>
-                        <StockAreaChart stockData={this.state.stockData}></StockAreaChart>
+                        <StockAreaChart stockData={this.state.stockData} keys={this.state.keys} type={this.state.type}></StockAreaChart>
                     </Col>
                 </Row>    
             </div>

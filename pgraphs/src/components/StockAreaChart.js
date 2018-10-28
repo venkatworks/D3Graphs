@@ -25,7 +25,28 @@ class StockAreaChart extends Component{
     }
     
     render(){
-     const  {stockData} = this.props;
+     const  {stockData,keys,type} = this.props;     
+     let areaChartKeys = keys.map((key)=>{ 
+         let chart = '';
+         switch(type){
+            case 'bse':
+                chart= <Area type='monotone' dataKey={key} stackId="1" stroke='#ffc658' fill='#ffc658' />
+            break;
+            case 'dia':
+                chart = <Area type='monotone' dataKey={key} stackId="1" stroke='#82ca9d' fill='#82ca9d' />
+            break;
+            case 'both':
+                if(key.includes('bse')){
+                    chart = <Area type='monotone' dataKey={key} stackId="1" stroke='#ffc658' fill='#ffc658' />
+                }else{
+                    chart = <Area type='monotone' dataKey={key} stackId="1" stroke='#82ca9d' fill='#82ca9d' /> 
+                }
+            break;
+         } 
+         return chart;
+     });
+     
+
      return(
      <div>
         <AreaChart width={600} height={400} data={stockData} className="AreaChart">
@@ -33,22 +54,16 @@ class StockAreaChart extends Component{
             <XAxis dataKey="name"/>
             <YAxis/>
             <Tooltip/>
-            <Area type='monotone' dataKey='Date' stackId="1" stroke='#8884d8' fill='#8884d8' />
-            <Area type='monotone' dataKey='diaOpen' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-            <Area type='monotone' dataKey='diaHigh' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-            <Area type='monotone' dataKey='diaLow' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-            <Area type='monotone' dataKey='diaClose' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-            <Area type='monotone' dataKey='bseOpen' stackId="1" stroke='#ffc658' fill='#ffc658' />
-            <Area type='monotone' dataKey='bseHigh' stackId="1" stroke='#ffc658' fill='#ffc658' />
-            <Area type='monotone' dataKey='bseLow' stackId="1" stroke='#ffc658' fill='#ffc658' />
-            <Area type='monotone' dataKey='bseClose' stackId="1" stroke='#ffc658' fill='#ffc658' />
+            {areaChartKeys}
         </AreaChart>
     </div>)
     }
 }
 
 StockAreaChart.propType={
-    stockData: PropTypes.any
+    stockData: PropTypes.any,
+    keys: PropTypes.any,
+    type: PropTypes.any
 }
 
 export default StockAreaChart;
